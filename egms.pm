@@ -2,7 +2,7 @@
 ## An extension to Dave Rolsky's XML::Generator::RSS10 to handle the UK Government eGMS category metadata
 ## Written by Andrew Green, Article Seven, http://www.article7.co.uk/
 ## Sponsored by Woking Borough Council, http://www.woking.gov.uk/
-## Last updated: Wednesday, 8 September 2004
+## Last updated: Tuesday, 02 May 2006
 
 package XML::Generator::RSS10::egms;
 
@@ -13,6 +13,7 @@ use Carp;
 
 use XML::Generator::RSS10::gcl;
 use XML::Generator::RSS10::lgcl;
+use XML::Generator::RSS10::ipsv;
 
 use base 'XML::Generator::RSS10::Module';
 
@@ -72,7 +73,10 @@ sub _category_data {
 
    my ($self,$rss,$category) = @_;
    
-   if (lc($category->[0]) eq 'gcl') {
+   if (lc($category->[0]) eq 'ipsv') {
+      croak "Can't add IPSV category data without 'ipsv' in your list of modules\n" unless ($rss->{'modules'}{'ipsv'});
+      XML::Generator::RSS10::ipsv->category($rss,$category->[1]);
+   } elsif (lc($category->[0]) eq 'gcl') {
       croak "Can't add GCL category data without 'gcl' in your list of modules\n" unless ($rss->{'modules'}{'gcl'});
       XML::Generator::RSS10::gcl->category($rss,$category->[1]);
    } elsif (lc($category->[0]) eq 'lgcl') {
@@ -114,18 +118,19 @@ XML::Generator::RSS10::egms - Support for the UK e-Government Metadata Standard 
     my $rss = XML::Generator::RSS10->new( Handler => $sax_handler, modules => [ qw(dc egms gcl lgcl) ] );
     
     $rss->item(
-                title => '2004 Council By-Election Results',
+                title => '2006 Council By-Election Results',
                 link  => 'http://www.example.gov.uk/news/elections.html',
                 description => 'Results for the 2004 Council by-elections',
                 dc => {
-                   date    => '2004-05-01',
+                   date    => '2006-05-04',
                    creator => 'J. Random Reporter, Example Borough Council, j.r.reporter@example.gov.uk',
                 },
                 egms => {
                    SubjectCategory => [
                                          ['GCL','Local government'],
                                          ['LGCL','Elections'],
-                                         ['LGCL','News announcements']
+                                         ['LGCL','News announcements'],
+                                         ['IPSV','Public relations']
                                       ]
                 }
               );
@@ -135,7 +140,7 @@ XML::Generator::RSS10::egms - Support for the UK e-Government Metadata Standard 
                    link  => 'http://www.example.gov.uk/news/',
                    description => 'News releases from Example Borough Council',
                    dc => {
-                      date       => '2004-05-01',
+                      date       => '2006-05-04',
                       creator    => 'J. Random Administrator, Example Borough Council, j.r.administrator@example.gov.uk',
                       publisher  => 'Example Borough Council',
                       rights     => 'Copyright (c) Example Borough Council',
@@ -145,7 +150,8 @@ XML::Generator::RSS10::egms - Support for the UK e-Government Metadata Standard 
                    egms => {
                       SubjectCategory => [
                                             ['GCL','Local government'],
-                                            ['LGCL','News announcements']
+                                            ['LGCL','News announcements'],
+	                                         ['IPSV','Public relations']
                                          ]
                    }
                  );
@@ -193,15 +199,17 @@ Alternatively, you may choose to pass a scalar C<SubjectCategory>, which will be
 
 =head1 CAVEAT
 
-If your category metadata is taken from either the GCL or the LGCL, you must remember to pass the relevant modules to the C<XML::Generator::RSS10> constructor, like so:
+If your category metadata is taken from the GCL, the LGCL, or IPSV, you must remember to pass the relevant modules to the C<XML::Generator::RSS10> constructor, like so:
 
-    my $rss = XML::Generator::RSS10->new( Handler => $sax_handler, modules => [ qw(dc egms gcl lgcl) ] );
+    my $rss = XML::Generator::RSS10->new( Handler => $sax_handler, modules => [ qw(dc egms gcl lgcl ipsv) ] );
 
 This is because the specification demands that references to categories in the GCL or LGCL must use the correct XML namespace.
 
-=head1 BUGS
+=head1 CHANGES
 
-Please let me know of any you find.  You can use the CPAN bug tracker for this by emailing L<bug-XML-Generator-RSS10-egms@rt.cpan.org>.
+B<Version 0.01>: Initial release.
+
+B<Version 0.02>: Added support for the Integrated Public Sector Vocabulary (IPSV).
 
 =head1 TO DO
 

@@ -5,7 +5,7 @@ use ExtUtils::MakeMaker;
 WriteMakefile(
     'NAME'		=> 'XML::Generator::RSS10::egms',
     'VERSION_FROM'	=> 'egms.pm', # finds $VERSION
-    'PREREQ_PM'		=> { XML::Generator::RSS10 => 0.01, XML::Generator::RSS10::gcl => 0.01, XML::Generator::RSS10::lgcl => 0.01 }, # e.g., Module::Name => 1.1
+    'PREREQ_PM'		=> { XML::Generator::RSS10 => 0.01, XML::Generator::RSS10::gcl => 0.01, XML::Generator::RSS10::lgcl => 0.01, XML::Generator::RSS10::ipsv => 0.01 }, # e.g., Module::Name => 1.1
     ($] >= 5.005 ?    ## Add these new keywords supported since 5.005
       (ABSTRACT_FROM => 'egms.pm', # retrieve abstract from module
        AUTHOR     => 'Andrew Green <andrew@article7.co.uk>') : ()),

@@ -1,4 +1,4 @@
-XML/Generator/RSS10/egms version 0.01
+XML/Generator/RSS10/egms version 0.02
 =====================================
 
 This module extends Dave Rolsky's XML::Generator::RSS10 to
@@ -35,11 +35,12 @@ This module requires:
    XML::Generator::RSS10
    XML::Generator::RSS10::gcl
    XML::Generator::RSS10::lgcl
+   XML::Generator::RSS10::ipsv
 
 
 COPYRIGHT AND LICENCE
 
-Copyright (C) 2004 Andrew Green, andrew@article7.co.uk
+Copyright (C) 2004-2006 Andrew Green, andrew@article7.co.uk
 
 Sponsored by Woking Borough Council, http://www.woking.gov.uk/
 
